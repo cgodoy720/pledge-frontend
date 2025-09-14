@@ -20,7 +20,6 @@ function MainDisplay() {
 
   // Animated values
   const { displayValue: animatedTotal, isAnimating: totalAnimating } = useAnimatedNumber(totals.grandTotal)
-  const { displayValue: animatedPercentage, isAnimating: percentageAnimating } = useAnimatedNumber(totals.goalPercentage)
 
   // Format the animated total for display
   const formatAnimatedCurrency = (cents) => {
@@ -73,13 +72,6 @@ function MainDisplay() {
       <div className="main-display__content">
         <div className={`main-display__amount ${totalAnimating ? 'animating' : ''}`}>
           {formatAnimatedCurrency(animatedTotal)}
-        </div>
-        
-        <div className="main-display__progress-bar">
-          <div 
-            className="main-display__progress-fill"
-            style={{ width: `${Math.min(animatedPercentage, 100)}%` }}
-          />
         </div>
       </div>
     </div>
