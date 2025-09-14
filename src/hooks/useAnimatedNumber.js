@@ -4,14 +4,23 @@ export const useAnimatedNumber = (targetValue, duration = 1500) => {
   const [displayValue, setDisplayValue] = useState(targetValue)
   const [isAnimating, setIsAnimating] = useState(false)
   const animationRef = useRef(null)
+  const currentTargetRef = useRef(targetValue)
   const startValueRef = useRef(targetValue)
   const startTimeRef = useRef(null)
 
   useEffect(() => {
-    if (targetValue === displayValue) return
+    // If target hasn't changed, don't animate
+    if (targetValue === currentTargetRef.current) return
 
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+    }
+
+    // Set up new animation
     setIsAnimating(true)
-    startValueRef.current = displayValue
+    startValueRef.current = displayValue // Start from current displayed value
+    currentTargetRef.current = targetValue // Track the current target
     startTimeRef.current = null
 
     const animate = (timestamp) => {
@@ -26,14 +35,14 @@ export const useAnimatedNumber = (targetValue, duration = 1500) => {
       const easeOutCubic = 1 - Math.pow(1 - progress, 3)
       
       const currentValue = startValueRef.current + 
-        (targetValue - startValueRef.current) * easeOutCubic
+        (currentTargetRef.current - startValueRef.current) * easeOutCubic
 
       setDisplayValue(Math.round(currentValue))
 
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate)
       } else {
-        setDisplayValue(targetValue)
+        setDisplayValue(currentTargetRef.current)
         setIsAnimating(false)
       }
     }
@@ -45,7 +54,7 @@ export const useAnimatedNumber = (targetValue, duration = 1500) => {
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [targetValue, duration, displayValue])
+  }, [targetValue, duration]) // Removed displayValue from dependencies
 
   return { displayValue, isAnimating }
 }
