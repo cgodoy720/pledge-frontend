@@ -200,9 +200,15 @@
   gap: 0.25rem;
 }
 
-.text-pledge__phone {
-  font-weight: bold;
+.text-pledge__name {
+  font-size: 1rem;
   color: white;
+  font-weight: 700;
+}
+
+.text-pledge__phone {
+  font-size: 0.9rem;
+  color: #cccccc;
 }
 
 .text-pledge__time {

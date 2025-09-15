@@ -81,7 +81,15 @@ function OverviewPage() {
   }
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString()
+    return new Date(dateString).toLocaleString('en-US', {
+      timeZone: 'America/New_York',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    })
   }
 
   const formatPhone = (phone) => {
@@ -154,6 +162,7 @@ function OverviewPage() {
                   <div key={pledge.id} className="text-pledge">
                     <div className="text-pledge__amount">{pledge.amountFormatted}</div>
                     <div className="text-pledge__details">
+                      <div className="text-pledge__name">{pledge.guest_name || 'Unknown'}</div>
                       <div className="text-pledge__phone">{formatPhone(pledge.phone_number)}</div>
                       <div className="text-pledge__time">{formatDate(pledge.created_at)}</div>
                     </div>

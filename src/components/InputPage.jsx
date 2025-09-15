@@ -85,7 +85,7 @@ function InputPage() {
   }
 
   const resetAllData = async () => {
-    if (!window.confirm('Are you sure you want to reset ALL pledge data? This cannot be undone.')) {
+    if (!window.confirm('Are you sure you want to reset ALL pledge data (paddle + SMS)? This cannot be undone.')) {
       return
     }
 
@@ -93,10 +93,27 @@ function InputPage() {
     try {
       await axios.delete(`${API_BASE_URL}/api/reset`)
       await fetchPledges()
-      alert('All pledge data has been reset')
+      alert('All pledge data has been reset (paddle + SMS)')
     } catch (error) {
       console.error('Error resetting data:', error)
       alert('Failed to reset data')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const resetSMSData = async () => {
+    if (!window.confirm('Are you sure you want to reset SMS pledge data only? This cannot be undone.')) {
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      await axios.delete(`${API_BASE_URL}/api/reset-sms`)
+      alert('SMS pledge data has been reset')
+    } catch (error) {
+      console.error('Error resetting SMS data:', error)
+      alert('Failed to reset SMS data')
     } finally {
       setIsLoading(false)
     }
@@ -108,6 +125,7 @@ function InputPage() {
         <h1 className="input-page__title">Pledge Input Control</h1>
         <div className="input-page__nav">
           <Link to="/" className="input-page__nav-link">Main Display</Link>
+          <Link to="/tracker" className="input-page__nav-link">Paddle Tracker</Link>
           <Link to="/overview" className="input-page__nav-link">Overview</Link>
           <div className={`input-page__status ${isConnected ? 'connected' : 'disconnected'}`}>
             {isConnected ? '🟢 Live' : '🔴 Disconnected'}
@@ -171,16 +189,30 @@ function InputPage() {
 
         <div className="input-page__admin">
           <h3 className="input-page__admin-title">Admin Controls</h3>
-          <button 
-            className="input-page__reset-button"
-            onClick={resetAllData}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Resetting...' : 'Reset All Data'}
-          </button>
-          <p className="input-page__reset-warning">
-            ⚠️ This will reset both paddle and text pledges to zero
-          </p>
+          <div className="input-page__admin-buttons">
+            <button 
+              className="input-page__reset-button input-page__reset-button--all"
+              onClick={resetAllData}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Resetting...' : 'Reset All Data'}
+            </button>
+            <button 
+              className="input-page__reset-button input-page__reset-button--sms"
+              onClick={resetSMSData}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Resetting...' : 'Reset SMS Only'}
+            </button>
+          </div>
+          <div className="input-page__reset-warnings">
+            <p className="input-page__reset-warning">
+              ⚠️ <strong>Reset All Data:</strong> Clears both paddle counts and SMS pledges
+            </p>
+            <p className="input-page__reset-warning">
+              ⚠️ <strong>Reset SMS Only:</strong> Clears only SMS pledges from Supabase database
+            </p>
+          </div>
         </div>
       </div>
     </div>

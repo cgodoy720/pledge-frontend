@@ -130,6 +130,70 @@
   font-weight: 600;
 }
 
+.input-page__admin {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: rgba(66, 66, 234, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(66, 66, 234, 0.3);
+}
+
+.input-page__admin-title {
+  color: white;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.input-page__admin-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input-page__reset-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 0.9rem;
+}
+
+.input-page__reset-button--all {
+  background: #dc3545;
+}
+
+.input-page__reset-button--all:hover:not(:disabled) {
+  background: #c82333;
+}
+
+.input-page__reset-button--sms {
+  background: #fd7e14;
+}
+
+.input-page__reset-button--sms:hover:not(:disabled) {
+  background: #e8690b;
+}
+
+.input-page__reset-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.input-page__reset-warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-page__reset-warning {
+  font-size: 0.85rem;
+  color: #ffc107;
+  margin: 0;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .input-page {
@@ -143,5 +207,13 @@
   
   .input-page__grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .input-page__admin-buttons {
+    flex-direction: column;
+  }
+  
+  .input-page__reset-warnings {
+    font-size: 0.8rem;
   }
 }
